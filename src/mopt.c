@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "getopt.h"
 //
-// Fairleigh Dickinson University
-// CSCIxxxx    <semester><year>
-// Programming Assignment x
+// Lehigh University
+// CSE 303 Spring 2020
+// Programming Assignment 4
 //
 // Description:
 //
