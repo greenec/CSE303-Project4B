@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-g -Wall -Werror -Wextra -Wwrite-strings
 
 build: prog4.c
-	${CC} ${CFLAGS} -o prog4 prog4.c
+	${CC} ${CFLAGS} -o prog4 prog4.c mopt.c sem.c
 
 clean:
 	rm -f prog4

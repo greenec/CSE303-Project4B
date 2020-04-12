@@ -21,10 +21,10 @@
 //
 void initSEM
 (
-   void * const   v,
-   const long     k
-);
-  
+	void *    v,
+	long     k
+	);
+
 
 //
 // Return the
@@ -32,32 +32,32 @@ void initSEM
 // internal
 // memory needed.
 //
-const int getSSizeSEM(); 
+int getSSizeSEM(); 
 
 //
 // pSEM (Wait)
 //
-const int pSEM
+int pSEM
 (
-   void * const   v 
-);
+	void *    v 
+	);
 
 //
 // putSEM (set)
 //
-const int setSEM
+int setSEM
 (
-   const int      x,
-   void * const   v 
-);
+	int      x,
+	void *    v 
+	);
 
 //
 // vSEM (Signal)
 //
 void vSEM
 (
-   void * const   v 
-);
+	void *    v 
+	);
 
 //
 // zSEM (Wait while
@@ -65,16 +65,16 @@ void vSEM
 //
 void zSEM
 (
-   void * const   v 
-);
+	void *    v 
+	);
 
 //
 // dSEM (delete 
 //       object) 
 void dSEM
 (
-   void * const   v 
-);
+	void *    v 
+	);
 
 #endif
 

@@ -9,7 +9,7 @@ int initBUF();
 //
 // Write to buffer.
 //
-int wBUF( const char * const s);
+int wBUF(  char *  s);
 
 //
 // Clean up.

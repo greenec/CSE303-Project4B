@@ -27,7 +27,7 @@ typedef enum
 // parameter.
 // (private)
 //
-static void addOptP(const char c, const char * const s, void * p);
+void addOptP( char c,  char *  s, void * p);
 
 //
 // Initialize the 
@@ -41,14 +41,14 @@ void * initialize();
 // and if it 
 // has a parameter.
 //
-const int setO(const char c, const int e, void * p);
+int setO( char c,  int e, void * p);
 
 //
 // Get the
 // error
 // message.
 //
-const char * const getErrMsg(void * p);
+char* getErrMsg(void * p);
 
 //
 // Get the
@@ -56,17 +56,17 @@ const char * const getErrMsg(void * p);
 // for the 
 // option.
 //
-const char * const getArg(const char c, void * p);
+char *  getArg( char c, void * p);
 
 //
 // Parse the
 // command 
 // line.
 //
-const sType parse
+sType parse
 (
-   const int                  argc, 
-   const char * const * const argv, 
+    int                  argc, 
+    char *  *  argv, 
    void                        * p
 );
 
@@ -78,7 +78,7 @@ const sType parse
 // command
 // line?
 //
-const int optExist(const char c, void * p);
+int optExist( char c, void * p);
 
 //
 // Get the 
@@ -86,13 +86,13 @@ const int optExist(const char c, void * p);
 // that follows
 // the options.
 //
-const char * const aVI(void * p);
+char *  aVI(void * p);
 
 
 //
 // Free
 // the memory
 //
-const sType moptFree(void * p);
+sType moptFree(void * p);
 
 #endif

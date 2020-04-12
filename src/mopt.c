@@ -15,7 +15,7 @@ enum                   {TABLESIZE = 257};
 typedef struct
 {
    char           m[TABLESIZE];
-   const char   * p[TABLESIZE];
+    char   * p[TABLESIZE];
    int                    tLen;
    char        oS[2*TABLESIZE];
    int                    oLen;
@@ -24,16 +24,16 @@ typedef struct
 
 void * initialize()
 {
-   const int sL =          sizeof(mType);
+    int sL =          sizeof(mType);
    void * mP   =            calloc(sL,1);
    return                             mP;
 }
 
-static void addOptP(const char c, const char * const s, void * p) 
+void addOptP( char c,  char *  s, void * p) 
 {
    if (optExist(c,p) != 1) 
    {
-      mType * const mP   = (mType * const)p;
+      mType *  mP   = (mType * )p;
       int            i   =         mP->tLen;
       mP->m[i]           =                c;
       mP->p[i++]         =                s;
@@ -42,9 +42,9 @@ static void addOptP(const char c, const char * const s, void * p)
 }
 
 
-const int setO(const char c, const int e, void * p) 
+ int setO( char c,  int e, void * p) 
 { 
-   mType * const mP   = (mType * const)p;
+   mType *  mP   = (mType * )p;
    int            i   =         mP->oLen;
    mP->oS[i++]        =                c;
    if (e) mP->oS[i++] =              ':';
@@ -53,13 +53,13 @@ const int setO(const char c, const int e, void * p)
 }
 
 
-const char * const getArg(const char c, void * p) 
+ char *  getArg( char c, void * p) 
 {
-   const int i =           optExist(c,p);
+    int i =           optExist(c,p);
    if (i>=0)
    {
-      mType * const mP =(mType * const)p;
-      const char *  pA =        mP->p[i];
+      mType *  mP =(mType * )p;
+       char *  pA =        mP->p[i];
       return                          pA;
    }
    return                              0;
@@ -67,10 +67,10 @@ const char * const getArg(const char c, void * p)
 }
 
 
-const sType parse
+ sType parse
 (
-   const int                  argc, 
-   const char * const * const argv, 
+    int                  argc, 
+    char *  *  argv, 
    void                         *p
 ) 
 { 
@@ -79,8 +79,8 @@ const sType parse
    extern char *                  optarg;
    extern int                     opterr;
 
-   mType * const mP  =  (mType * const)p;
-   const char * const optstring = mP->oS; 
+   mType *  mP  =  (mType * )p;
+    char *  optstring = mP->oS; 
    char                                c;
 
    //
@@ -106,21 +106,21 @@ const sType parse
    return                   MOPT_PARSEOK; 
 }
 
-const char * const aVI(void * p)
+ char *  aVI(void * p)
 {
-   mType * const mP   = (mType * const)p;
-   const char * const t =         mP->pC;
+   mType *  mP   = (mType * )p;
+    char *  t =         mP->pC;
    return t;
 }
 
-const int optExist(const char c, void * p) 
+ int optExist( char c, void * p) 
 { 
    if (p)
    {
-      const mType * const mP = (mType*)p;
+       mType *  mP = (mType*)p;
 
-      const char * r =   
-                     (const char *)mP->m; 
+       char * r =   
+                     ( char *)mP->m; 
       int i = 0;
       while(r[i])  
          if (c==r[i])           return i;
@@ -130,7 +130,7 @@ const int optExist(const char c, void * p)
 }
 
 
-const sType moptFree(void * p)
+ sType moptFree(void * p)
 {
    if (p)                        free(p);
    p                      =            0;

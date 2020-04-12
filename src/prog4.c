@@ -1,4 +1,6 @@
 #include "mopt.h"
+#include "sem.h"
+#include "shbuf.h"
 #include <stdio.h>
 #include <stdlib.h>
 //
@@ -9,13 +11,13 @@
 // Description:
 //
 //
-void * const getVals(const int argc, const char ** argv);
+void *  getVals( int argc,  char ** argv);
 
 
-main(const int argc, const char ** argv)
+int main( int argc,  char ** argv)
 {
  
-   void * const v = getVals(argc, argv);
+   void *  v = getVals(argc, argv);
       
    //
    // Output.
@@ -25,7 +27,7 @@ main(const int argc, const char ** argv)
       for (ch = 'a'; ch <= 'z'; ch++)
          if (optExist(ch,v)+1)
          { 
-            const char * const pM =
+             char *  pM =
                          getArg(ch,v);
             printf("opt %c found",ch);
             if (pM) printf  
@@ -40,7 +42,7 @@ main(const int argc, const char ** argv)
    // parameter.
    //
    {
-      const char * const   pm =   aVI(v);
+       char *    pm =   aVI(v);
       printf         ("Parm = %s\n", pm);
    }
 
@@ -49,15 +51,16 @@ main(const int argc, const char ** argv)
    // memory
    //
    moptFree                          (v);
+   return 1;
 }
 
 
-void * const getVals(const int argc, const char ** argv)
+void *  getVals( int argc,  char ** argv)
 {
    //
    // Initialize.
    //
-   void * const v =         initialize();
+   void *  v =         initialize();
 
    //
    // Set expected
@@ -77,7 +80,7 @@ void * const getVals(const int argc, const char ** argv)
       // Parse the
       // command line.
       //
-      const int pI =  parse(argc,argv,v);
+       int pI =  parse(argc,argv,v);
       if(pI == -1)
       {
          printf      ("Parse failed!\n");
