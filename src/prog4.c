@@ -33,7 +33,7 @@ typedef struct Commands {
 } Commands;
 
 
-void *  getVals( int argc,  char ** argv);
+
 void determineMode(int argc, char** argv, struct Commands*);
 int validateArguments(struct Commands*);
 void printUseage();
@@ -152,12 +152,6 @@ int validateArguments(struct Commands* command){
 
 
 void determineMode(int argc, char** argv, struct Commands* command){
-   /*
-   if t == 1 then run merge sort
-   if t == 2 then run spin lock
-   otherwise return 0 and exit 
-   */
-
    if(argc <= 1){
       printUseage();
       return;
@@ -186,10 +180,6 @@ void determineMode(int argc, char** argv, struct Commands* command){
         }
    }
 
-   if(command->mode ==3 ){
-
-   }
-
 }
 
 
@@ -200,38 +190,3 @@ void printUseage(){
 
 
 
-
-void *  getVals( int argc,  char ** argv)
-{
-   //
-   // Initialize.
-   //
-   void *  v =         initialize();
-
-   //
-   // Set expected
-   // options and
-   // if a parameter
-   // is expected.
-   //
-   setO                      ('a', 0, v);
-   setO                      ('b', 0, v);
-   setO                      ('g', 0, v);
-   setO                      ('r', 1, v);
-   setO                      ('s', 1, v);
-
-   {
-
-      //
-      // Parse the
-      // command line.
-      //
-     int pI =  parse(argc,argv,v);
-     if(pI == -1)
-     {
-      printf      ("Parse failed!\n");
-      exit                        (0);
-   }
-   return v;
-}
-}
