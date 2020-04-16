@@ -35,27 +35,43 @@ int main( int argc,  char ** argv)
       //printf("%s\n", argv[i]);
    }
    int mode = determineMode(argc, argv);
+   int threads = 0;
+
+   if(mode == 3){
+      printf("%s","Enter either 1 or 2: " );
+      scanf("%d", &mode);
+      if(mode == 2){
+         printf("%s", "Enter the number of threads: " );
+         scanf("%d", &threads);
+      } else if(mode == 1){
+
+      } else{
+         printf("%s\n", "Invalid mode option" );
+         printUseage();
+         return 0;
+      }
+   }
 
    if(mode != 1 && mode != 2){
       printUseage();
       return 0;
    }
 
+
    if(mode == 2){
-      printf("%s\n", "Spin lock test" );
+      printf("%s\n", "Spin lock" );
+      printf("Threads: %d \n", threads );
       //call spin lock 
    } else if (mode == 1){
       printf("%s\n", "Threaded merge sort" );
-      int threads = getNumberOfThreads(argc, argv);
-      printf("Threads: %d \n", threads );
+      threads = getNumberOfThreads(argc, argv);
+
       //parse more args 
    } else{
       //should never be here retval can only ever be 1 or 2
       printf("%s \n", "Error parsing CLI.");
       return 0;
    }
-
-
 
 
    /*
@@ -99,20 +115,21 @@ int main( int argc,  char ** argv)
 }
 
 int getNumberOfThreads(int argc, char** argv){
+
    int threads = -1;
    int opt;
    while ((opt = getopt(argc, argv, "n:")) != -1) {
         switch (opt) {
-            case 'n':
-               threads = atoi(optarg);
-               break;
-            case 'p':
-               return 
-            default :  
-               continue;
+          case 'n':
+             threads = atoi(optarg);
+             break;
+          default : ; continue;;
         }
    }
+
    return threads;
+
+
 }
 
 /*
@@ -137,12 +154,15 @@ int determineMode(int argc, char** argv){
    }
 
    int opt;
-   while ((opt = getopt(argc, argv, "t:")) != -1) {
+   while ((opt = getopt(argc, argv, "pt:")) != -1) {
         switch (opt) {
-          case 't': 
-            mode = atoi(optarg);
-            return mode;
-          default : printUseage(); return 0;
+            case 't': 
+               mode = atoi(optarg);
+               return mode;
+            case 'p':
+               mode = 3;
+               return mode;
+            default : printUseage(); return 0;
         }
    }
    return mode;
