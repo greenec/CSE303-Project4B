@@ -22,11 +22,23 @@
 //
 // Description:
 //
+
+typedef struct Commands {
+   int mode;
+   int threads;
+   char* filename;
+   int userEntry;
+   int messages;
+} Commands;
+
 //
 void *  getVals( int argc,  char ** argv);
-int determineMode(int argc, char** argv);
+void determineMode(int argc, char** argv, struct Commands*);
 int getNumberOfThreads(int argc, char** argv);
 void printUseage();
+
+
+
 
 int main( int argc,  char ** argv)
 {
@@ -34,44 +46,19 @@ int main( int argc,  char ** argv)
    for(int i = 0 ; i < argc; i++){
       //printf("%s\n", argv[i]);
    }
-   int mode = determineMode(argc, argv);
-   int threads = 0;
 
-   if(mode == 3){
-      printf("%s","Enter either 1 or 2: " );
-      scanf("%d", &mode);
-      if(mode == 2){
-         printf("%s", "Enter the number of threads: " );
-         scanf("%d", &threads);
-      } else if(mode == 1){
-
-      } else{
-         printf("%s\n", "Invalid mode option" );
-         printUseage();
-         return 0;
-      }
-   }
-
-   if(mode != 1 && mode != 2){
-      printUseage();
-      return 0;
-   }
+   struct Commands* command = (struct Commands*) malloc (sizeof(Commands));
+   determineMode(argc, argv, command);
+   printf(" Mode: %d \n", command->mode  );
+   printf(" Threads: %d \n", command->threads  );
+   printf(" Mode: %d \n", command->userEntry  );
+   printf(" Mode: %d \n", command->messages  );
 
 
-   if(mode == 2){
-      printf("%s\n", "Spin lock" );
-      printf("Threads: %d \n", threads );
-      //call spin lock 
-   } else if (mode == 1){
-      printf("%s\n", "Threaded merge sort" );
-      threads = getNumberOfThreads(argc, argv);
 
-      //parse more args 
-   } else{
-      //should never be here retval can only ever be 1 or 2
-      printf("%s \n", "Error parsing CLI.");
-      return 0;
-   }
+
+
+
 
 
    /*
@@ -114,58 +101,47 @@ int main( int argc,  char ** argv)
    return 1;
 }
 
-int getNumberOfThreads(int argc, char** argv){
-
-   int threads = -1;
-   int opt;
-   while ((opt = getopt(argc, argv, "n:")) != -1) {
-        switch (opt) {
-          case 'n':
-             threads = atoi(optarg);
-             break;
-          default : ; continue;;
-        }
-   }
-
-   return threads;
-
-
-}
-
-/*
-char* getFileName(int argc, char** argv){
-   char* fileName = NULL;
-   return fileName;
-}
-*/
 
 
 
-int determineMode(int argc, char** argv){
+void determineMode(int argc, char** argv, struct Commands* command){
    /*
    if t == 1 then run merge sort
    if t == 2 then run spin lock
    otherwise return 0 and exit 
    */
-   int mode = 0;
+
    if(argc <= 1){
       printUseage();
-      return 0;
+      return;
    }
 
    int opt;
-   while ((opt = getopt(argc, argv, "pt:")) != -1) {
+   while ((opt = getopt(argc, argv, "pt:n:f:i")) != -1) {
         switch (opt) {
             case 't': 
-               mode = atoi(optarg);
-               return mode;
+               command->mode = atoi(optarg);
+               break;
+            case 'n':
+               command->threads = atoi(optarg);
+               break;
+            case 'f':
+               command->filename = optarg;
+               break;
             case 'p':
-               mode = 3;
-               return mode;
-            default : printUseage(); return 0;
+               command->userEntry = 1;
+               return;
+            case 'i':
+               command->messages = atoi(optarg);
+               break;
+            default : printUseage(); return;
         }
    }
-   return mode;
+
+   if(command->mode ==3 ){
+
+   }
+
 }
 
 
