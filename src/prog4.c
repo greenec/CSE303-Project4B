@@ -64,7 +64,7 @@ int main( int argc,  char ** argv)
    }
 
 
-
+   free(command);
 
 
    /*
@@ -112,7 +112,6 @@ int validateArguments(struct Commands* command){
       if(command->userEntry != 0){
          return 0;
       }
-
       if(command->threads != 0){
          return 0;
       }
@@ -143,7 +142,6 @@ int validateArguments(struct Commands* command){
          return 0;
       }
    }
-
    if(command->messages <= 0){
       return 0;
    }
