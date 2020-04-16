@@ -18,7 +18,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include "sem.h"
 #include "shbuf.h"
+
+//#include "shbuf.c"
 
 /*
 ** On most Linux machines you can go up
@@ -62,7 +65,7 @@ enum  { DUMPINHIBIT   =              1 };
       */
       int    useQsort     = 0; 
     
-const double mS_PER_SEC   = 1000000.0;
+ double mS_PER_SEC   = 1000000.0;
 
 /*
 ** This is the quicksort algorithm. Since all intermediate
@@ -70,15 +73,17 @@ const double mS_PER_SEC   = 1000000.0;
 ** safe.
 ** 
 */
-int partition(int * const a, const int l, const int r, const char * s) 
+int partition(int *  a,  int l,  int r,  char * s) 
 {
-    const int pivot = a[l];
+     int pivot = a[l];
           int     i = l; 
           int     j = r+1;
           int     t;
 
     while(1)
     {
+        //add ina time stamp 
+        //also add in the thread id
         wBUF("A Q message");
         wBUF(s);
         wBUF("\n");
@@ -95,11 +100,11 @@ int partition(int * const a, const int l, const int r, const char * s)
     return j;
 }
 
-void qSortArray(int * const a, const int l, const int r, const char * s)
+void qSortArray(int *  a,  int l,  int r,  char * s)
 {
     if( l < r ) 
     {
-        const int j = partition( a, l, r, s );
+         int j = partition( a, l, r, s );
         qSortArray(a,l,  j-1, s );
         qSortArray(a,j+1,r  , s );
     }
@@ -112,13 +117,13 @@ void qSortArray(int * const a, const int l, const int r, const char * s)
 /*
 ** This is the shellsort algorithm.
 */
-void shellSortPhase(int * const a, const int length, const int gap) 
+void shellSortPhase(int *  a,  int length,  int gap) 
 {
     int i;
     for (i=gap; i<length; ++i) 
     {
         wBUF("An S message\n");
-        const int value = a[i];
+         int value = a[i];
               int j;
         for (j = i - gap; j >= 0 && a[j] > value; j -= gap) 
             a[j + gap] = a[j];
@@ -126,14 +131,14 @@ void shellSortPhase(int * const a, const int length, const int gap)
     }
 }
     
-void sSortArray(int * const a, const size_t length, const char * s) 
+void sSortArray(int *  a,  size_t length,  char * s) 
 {
     /*
      * gaps[] should approximate a geometric progression.
      * The following sequence is the best known in terms of
      * the average number of key comparisons made [2]
      */
-    static const int gaps[] = { 1, 4, 10, 23, 57, 132, 301, 701 };
+    static  int gaps[] = { 1, 4, 10, 23, 57, 132, 301, 701 };
     int sizeIndex;
     
     for 
@@ -155,9 +160,9 @@ void sSortArray(int * const a, const size_t length, const char * s)
 */
 typedef struct
 {
-           int * const a;
-    const  int         s;
-    const  char    tc[2];
+           int *  a;
+      int         s;
+      char    tc[2];
 } sortParmType;
 
 /*
@@ -176,7 +181,7 @@ void cleanExit()
 */
 void * sortWrapper(void * x)
 {
-    sortParmType * const S = (sortParmType * const)x;
+    sortParmType *  S = (sortParmType * )x;
     if (S->a != 0) 
         /*
         ** Perform shell or quicksort.
@@ -192,12 +197,12 @@ void * sortWrapper(void * x)
 ** This function gets the array size from the 
 ** user.
 */
-const long getArraySize(const char * const p)
+ long getArraySize( char *  p)
 {
           char         line[MAXLINE];
-    const int          j = fputs(p, stdout);
-    const char * const c = fgets(line, MAXLINE, stdin);
-    const long         s = (long) atof(line);
+     int          j = fputs(p, stdout);
+     char *  c = fgets(line, MAXLINE, stdin);
+     long         s = (long) atof(line);
     if ((s<=0) || (s>MAXARRAYSIZE)) 
     {
         if (useQsort) printf("Quicksort Used\n");
@@ -211,7 +216,7 @@ const long getArraySize(const char * const p)
 ** This function copies one array to another. 
 */
 void copyArray
-    (int * const a, const int * const b, const int arrSize)
+    (int *  a,  int *  b,  int arrSize)
 {
     int i;
     for (i=0; i<arrSize; ++i) a[i] = b[i];
@@ -223,16 +228,16 @@ void copyArray
 */
 void mergeArrays
 (
-           int * const aTarg, 
-     const int * const a1, 
-     const int * const a2, 
-     const int         aTargSize)
+           int *  aTarg, 
+      int *  a1, 
+      int *  a2, 
+      int         aTargSize)
 {
     int iTarg = 0;
     int i1    = 0;
     int i2    = 0;
 
-    const int aInSize = aTargSize/2;
+     int aInSize = aTargSize/2;
     
     do
     {
@@ -250,7 +255,7 @@ void mergeArrays
 /*
 ** Error in spawning thread?  Exit.
 */
-void sThreadError(const int t)
+void sThreadError( int t)
 {
     if(t) printf("Error spawning Thread 1\n");
     else  printf("Error spawning Thread 2\n");
@@ -260,7 +265,7 @@ void sThreadError(const int t)
 /*
 ** Error in joining thread?  Exit.
 */
-void jThreadError(const int t)
+void jThreadError( int t)
 {
     if(t) printf("Error joining Thread 1\n");
     else  printf("Error joining Thread 2\n");
@@ -272,8 +277,8 @@ void jThreadError(const int t)
 */
 void joinThreads
 ( 
-    const pthread_t t1, 
-    const pthread_t t2
+     pthread_t t1, 
+     pthread_t t2
 )
 {
     int *s;
@@ -287,7 +292,7 @@ void joinThreads
 ** This function performs the sequential sort by 
 ** direct invocation.
 */
-void sequentialSort(int * const a, const int arrSize)
+void sequentialSort(int *  a,  int arrSize)
 {
     if (useQsort) qSortArray (a,0,     arrSize-1,"0");
     else          sSortArray (a,arrSize         ,"0");
@@ -300,13 +305,13 @@ void sequentialSort(int * const a, const int arrSize)
 */
 void threadedSort
 (
-          int * const a1in, 
-          int * const a2in, 
-    const int         arrSize
+          int *  a1in, 
+          int *  a2in, 
+     int         arrSize
 )
 {
-    const sortParmType S1 = {a1in,arrSize,"1"};
-    const sortParmType S2 = {a2in,arrSize,"2"};
+     sortParmType S1 = {a1in,arrSize,"1"};
+     sortParmType S2 = {a2in,arrSize,"2"};
           pthread_t    t1 = 0;
           pthread_t    t2 = 0;
 
@@ -319,13 +324,13 @@ void threadedSort
 
     if (a1in != 0)
     {
-        const int rc = 
+         int rc = 
             pthread_create(&t1,NULL,sortWrapper,(void *)(&S1));
         if (rc) sThreadError(0);
     }
     if (a2in != 0)
     {
-        const int rc = 
+         int rc = 
             pthread_create(&t2,NULL,sortWrapper,(void *)(&S2));
         if (rc) sThreadError(1);
     }
@@ -341,13 +346,13 @@ void threadedSort
 */
 int verifyArrays
 (
-    const int * const a1in, 
-    const int * const a2in, 
-    const int         arrSize
+     int *  a1in, 
+     int *  a2in, 
+     int         arrSize
 )
 {
           int i;
-    const int u = arrSize-1;
+     int u = arrSize-1;
     for (i=0; i<arrSize; ++i)
     {
         if (a1in[i] != a2in[i])             return 0;
@@ -362,14 +367,14 @@ int verifyArrays
 */
 void dumpArray
 (
-     const char * const t, 
-     const int  * const a, 
-     const int          arrSize
+      char *  t, 
+      int  *  a, 
+      int          arrSize
 )
 {
     if (DUMPINHIBIT) return;
     int i;
-    printf("\n"); printf(t); printf("\n");
+    printf("\n"); printf("%s\n",t); printf("\n");
     for (i=0; i<arrSize; printf("    %d\n", a[i++]));
 
 }
@@ -378,13 +383,13 @@ void dumpArray
 ** This function fills an array with values
 ** ranging from 0 to RAND_MAX. 
 */
-void fillArray(int * const a, const int arrSize)
+void fillArray(int *  a,  int arrSize)
 {
     int i;
     for (i=0; i<arrSize; ++i) a[i] = rand();
 }
 
-int main(const int argc, char * const argv[])
+int threadedMergeSort( int argc, char *  argv[])
 {
 
     /*
@@ -400,19 +405,19 @@ int main(const int argc, char * const argv[])
         );
 
     /*
-    ** Constant used in time computation
+    ** ant used in time computation
     */
-    const double mS_PER_CLOCK = mS_PER_SEC/CLOCKS_PER_SEC;
+     double mS_PER_CLOCK = mS_PER_SEC/CLOCKS_PER_SEC;
 
     /*
     ** If the user supplies any argument, use quicksort.
     */
-    if(argc>1) useQsort = 1;
+    useQsort = 1;
 
     while(1)
     {
-        const int as  = getArraySize(prompt);
-        const int as2 = as*2;
+         int as  = getArraySize(prompt);
+         int as2 = as*2;
         clock_t   t1,t2;
 
 
@@ -439,7 +444,7 @@ int main(const int argc, char * const argv[])
         printf("Time to do 2 thread sorts and a merge            = %f", 
            (double)(t2-t1) * mS_PER_CLOCK);
         printf(" microseconds\n");
-return;
+return 1;
         /*
         ** Run the second test case (2 sorts, copy &merge) Step 5
         */

@@ -14,7 +14,8 @@
 
 #include <string.h>
 #include <unistd.h>
-
+#include "threadedMergeSort.c"
+#include "shbuf.h"
 //
 // Lehigh University
 // CSE 303 Spring 2020
@@ -41,6 +42,7 @@ void printUseage();
 
 
 
+
 int main( int argc,  char ** argv)
 {
 
@@ -61,6 +63,11 @@ int main( int argc,  char ** argv)
    if(!valid){
       printUseage();
       return 0;
+   }
+
+
+   if(command->mode == 1){
+      int ret = threadedMergeSort(argc, argv);
    }
 
 
@@ -106,6 +113,7 @@ int main( int argc,  char ** argv)
       //moptFree                          (v);
    return 1;
 }
+
 
 int validateArguments(struct Commands* command){
    if(command->mode == 1){
