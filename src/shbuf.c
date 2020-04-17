@@ -1,11 +1,12 @@
 #include "sem.h"
 #include "shbuf.h"
 #include <stdio.h>
-
-
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
 char v[1024];
 enum {SEM = 1};
-
+double mS_PER_SEC1   = 1000000.0;
 int initBUF() {
 	//if sem == 0 then its disabled
 	if(SEM){
@@ -19,11 +20,21 @@ int initBUF() {
 //
 // Write to buffer.
 //
-int wBUF(  char *  s )
+int wBUF(  char *  s ,clock_t t1 )
 {
-	//also time stamp here
+	double mS_PER_CLOCK = mS_PER_SEC1/CLOCKS_PER_SEC;
+
 	if(SEM) pSEM(v);
-	printf("%s\n",s);
+	time_t ltime = clock();
+  	char* time = ctime(&ltime);
+
+  	clock_t t2 = clock();
+	printf("%s ",s);
+	printf("Wait Time: %f \n", 
+           (double)(t2-t1) * mS_PER_CLOCK);
+
+
+
 	if(SEM) vSEM(v);
 	return  0;
 }

@@ -82,11 +82,19 @@ int partition(int *  a,  int l,  int r,  char * s)
 
     while(1)
     {
-        //add ina time stamp 
-        //also add in the thread id
-        wBUF("A Q message");
-        wBUF(s);
-        wBUF("\n");
+    	double mS_PER_CLOCK = mS_PER_SEC/CLOCKS_PER_SEC;
+		clock_t   t1 = clock();
+        char message[5000] = "Thread: ";
+        strcat(message, s);
+
+
+        //strcat(message, total);
+       // printf("%s\n" , message);
+
+        wBUF(message, t1);
+        //wBUF(s);
+        //wBUF((char*)total);
+       // wBUF("\n");
         do ++i; while((a[i]<=pivot) && (i<=r));
         do --j; while(a[j]>pivot );
         if(i>=j) break;
@@ -122,7 +130,7 @@ void shellSortPhase(int *  a,  int length,  int gap)
     int i;
     for (i=gap; i<length; ++i) 
     {
-        wBUF("An S message\n");
+        //wBUF("An S message\n");
          int value = a[i];
               int j;
         for (j = i - gap; j >= 0 && a[j] > value; j -= gap) 
