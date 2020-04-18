@@ -38,81 +38,41 @@ void printUseage();
 
 
 
-
-
-int main( int argc,  char ** argv)
+int main(int argc, char** argv)
 {
+	for (int i = 0 ; i < argc; i++)
+	{
+		// printf("%s\n", argv[i]);
+	}
 
-   for(int i = 0 ; i < argc; i++){
-      //printf("%s\n", argv[i]);
-   }
+	struct Commands* command = (struct Commands*) malloc (sizeof(Commands));
+	determineMode(argc, argv, command);
+	printf(" Mode: %d \n", command->mode  );
+	printf(" Threads: %d \n", command->threads  );
+	printf(" Messages: %d \n", command->messages  );
+	printf(" Mode: %d \n", command->messages  );
+	printf(" Filename: %s \n", command->filename  );
 
-   struct Commands* command = (struct Commands*) malloc (sizeof(Commands));
-   determineMode(argc, argv, command);
-   printf(" Mode: %d \n", command->mode  );
-   printf(" Threads: %d \n", command->threads  );
-   printf(" Messages: %d \n", command->messages  );
-   printf(" Mode: %d \n", command->messages  );
-   printf(" Filename: %s \n", command->filename  );
-
-
-   int valid = validateArguments(command);
-   if(!valid){
-      printUseage();
-      return 0;
-   }
-
-
-   if(command->mode == 1){
-      int ret = threadedMergeSort(argc, argv);
-   }
-   
-	if (command->mode == 2) {
-		spinlock_test(1);
+	int valid = validateArguments(command);
+	if (!valid)
+	{
+		printUseage();
+		return 0;
 	}
 
 
-   free(command);
+	if(command->mode == 1)
+	{
+		int ret = threadedMergeSort(argc, argv);
+	}
+	else if (command->mode == 2)
+	{
+		spinlock_test(command->threads);
+	}
 
-
-   /*
-   void *  v = getVals(argc, argv);
-      
-   //
-   // Output.
-   //
-   {
-      char                         ch;
-      for (ch = 'a'; ch <= 'z'; ch++)
-         if (optExist(ch,v)+1)
-         { 
-             char *  pM =
-                         getArg(ch,v);
-            printf("opt %c found",ch);
-            if (pM) printf  
-                    (" parm = %s",pM);
-            printf             ("\n");
-         }
-   }
-
-
-   //
-   // Get the ending
-   // parameter.
-   //
-   {
-       char *    pm =   aVI(v);
-      printf         ("Parm = %s\n", pm);
-   }
-
-   //
-   // Free the
-   // memory
-   //
-
-   */
-      //moptFree                          (v);
-   return 1;
+	free(command);
+	
+	return 1;
 }
 
 
