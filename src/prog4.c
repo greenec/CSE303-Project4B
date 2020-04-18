@@ -1,21 +1,18 @@
-#include "mopt.h"
-#include "sem.h"
-#include "shbuf.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdlib.h>
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-
-
 #include <string.h>
+#include <stdio.h>
 #include <unistd.h>
-#include "threadedMergeSort.c"
+
+#include "mopt.h"
+#include "sem.h"
 #include "shbuf.h"
+#include "spinlock.h"
+
+#include "threadedMergeSort.c"
+
 //
 // Lehigh University
 // CSE 303 Spring 2020
@@ -69,6 +66,10 @@ int main( int argc,  char ** argv)
    if(command->mode == 1){
       int ret = threadedMergeSort(argc, argv);
    }
+   
+	if (command->mode == 2) {
+		spinlock_test(1);
+	}
 
 
    free(command);
