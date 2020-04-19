@@ -67,7 +67,7 @@ int main(int argc, char** argv)
 	}
 	else if (command->mode == 2)
 	{
-		spinlock_test(command->threads);
+		spinlock_test(command->threads, command->messages);
 	}
 
 	free(command);

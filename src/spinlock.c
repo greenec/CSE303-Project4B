@@ -5,16 +5,32 @@
 
 #include "shbuf.h"
 
-void* spinlockWrapper(void* args)
+struct spinlock_args {
+	int threadNum;
+	int numMessages;
+	int *messageCounter;
+};
+
+void* spinlockWrapper(void *s)
 {
-	int threadNum = *(int*) args;
+	struct spinlock_args *args = s;
+	
+	int *messageCounter = args->messageCounter;
 	
 	char message[50];
-	
-	sprintf(message, "I'm thread #%d", threadNum);
+	sprintf(message, "I'm thread #%d", args->threadNum);
 	
 	while (1 == 1)
 	{
+		(*messageCounter)++;
+	
+		// check if we've exceeded the total number of messages sent
+		if ((*messageCounter) > args->numMessages)
+		{
+			return NULL;
+		}
+		
+		// write the message to the synchronized buffer
 		wBUF(message, clock());
 	}
 }
@@ -22,15 +38,19 @@ void* spinlockWrapper(void* args)
 /*
  * Spinlock test function
  */
-void spinlock_test(int numThreads)
+void spinlock_test(int numThreads, int numMessages)
 {
+	// keep track of the threads that we create
 	pthread_t threads[4];
-	int spinlock_args[4];
+	
+	// holds the arguments that get passed to the function for each thread
+	struct spinlock_args arguments[4];
+	
+	// each thread gets a reference to this counter so the program can return when it's sent all of its messages
+	int messageCounter;
 	
 	initBUF();
 	
-	wBUF("Before threads\n", clock());
-		
 	/*
 	 * Create the threads
 	 */
@@ -41,9 +61,11 @@ void spinlock_test(int numThreads)
 		 * Each argument needs its own space in memory because if a thread isn't ready
 		 * until after we've created the the thread before it, they will have duplicate arguments.
 		 */
-		spinlock_args[i] = i + 1;
+		arguments[i].threadNum = i + 1;
+		arguments[i].messageCounter = &messageCounter;
+		arguments[i].numMessages = numMessages;
 		
-		if (pthread_create(&threads[i], NULL, spinlockWrapper, &spinlock_args[i]) != 0)
+		if (pthread_create(&threads[i], NULL, spinlockWrapper, &arguments[i]) != 0)
 		{
 			fprintf(stderr, "An error occurred while creating thread #%d for the spinlock test.", i);
 			return;
