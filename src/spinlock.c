@@ -27,7 +27,7 @@ void* spinlockWrapper(void *s)
 		// check if we've exceeded the total number of messages sent
 		if ((*messageCounter) > args->numMessages)
 		{
-			return NULL;
+			pthread_exit(NULL);
 		}
 		
 		// write the message to the synchronized buffer
