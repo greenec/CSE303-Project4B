@@ -50,7 +50,6 @@ int main(int argc, char** argv)
 	printf(" Mode: %d \n", command->mode  );
 	printf(" Threads: %d \n", command->threads  );
 	printf(" Messages: %d \n", command->messages  );
-	printf(" Mode: %d \n", command->messages  );
 	printf(" Filename: %s \n", command->filename  );
 
 	int valid = validateArguments(command);
