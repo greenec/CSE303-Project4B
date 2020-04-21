@@ -5,12 +5,24 @@
 
 #include "shbuf.h"
 
+//
+// Lehigh University
+// CSE 303 Spring 2020
+// Programming Assignment 4B
+//
+
 struct spinlock_args {
 	int threadNum;
 	int numMessages;
 	int *messageCounter;
 };
 
+/*
+ * Spinlock wrapper function
+ * 
+ * Checks to see if all messages are sent
+ * and if not sends a message to the buffer (shbuf).
+ */
 void* spinlockWrapper(void *s)
 {
 	struct spinlock_args *args = s;
@@ -20,17 +32,17 @@ void* spinlockWrapper(void *s)
 	char message[50];
 	sprintf(message, "I'm thread #%d", args->threadNum);
 	
-	while (1 == 1)
+	while (1) //run infinitely
 	{
 		(*messageCounter)++;
 	
 		// check if we've exceeded the total number of messages sent
 		if ((*messageCounter) > args->numMessages)
 		{
-			pthread_exit(NULL); 
+			pthread_exit(NULL); // if we have exceeded
 		}
 		
-		// write the message to the synchronized buffer
+		// if we haven't exceeded write the message to the synchronized buffer
 		wBUF(message, clock());
 	}
 }

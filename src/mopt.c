@@ -1,14 +1,13 @@
 #include "mopt.h"
 #include <stdlib.h>
 #include "getopt.h"
+
 //
 // Lehigh University
 // CSE 303 Spring 2020
-// Programming Assignment 4
+// Programming Assignment 4B
 //
-// Description:
-//
-//
+
 
 enum                   {TABLESIZE = 257};
 

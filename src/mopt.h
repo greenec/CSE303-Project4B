@@ -1,9 +1,10 @@
 #if !defined      (MOPT___INCLUDED)
 #define            MOPT___INCLUDED
+
 //
 // Lehigh University
 // CSE 303 Spring 2020
-// Programming Assignment 4
+// Programming Assignment 4B
 //
 // Description:
 //

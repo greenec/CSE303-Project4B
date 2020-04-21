@@ -6,7 +6,11 @@
 #include <sys/sem.h>
 #include "sem.h"
 
-
+//
+// Lehigh University
+// CSE 303 Spring 2020
+// Programming Assignment 4B
+//
 
 typedef struct sem_ds  sDType;
 typedef struct seminfo sIType;
@@ -115,7 +119,7 @@ int setSEM
  semctl
  (sid,0,SETVAL, x);
       //this function oroginally did not have any return value specified so I just had it return SID
-      //becuase I wasn't sure of its use at the time -Chris
+      //because I wasn't sure of its use at the time -Chris
  return sid;
  
 }

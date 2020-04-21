@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+
+//
+// Lehigh University
+// CSE 303 Spring 2020
+// Programming Assignment 4B
+//
+
 char v[1024];
 enum {SEM = 1};
 double mS_PER_SEC1   = 1000000.0;
