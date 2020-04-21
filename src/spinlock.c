@@ -27,7 +27,7 @@ void* spinlockWrapper(void *s)
 		// check if we've exceeded the total number of messages sent
 		if ((*messageCounter) > args->numMessages)
 		{
-			pthread_exit(NULL);
+			pthread_exit(NULL); 
 		}
 		
 		// write the message to the synchronized buffer
@@ -37,6 +37,10 @@ void* spinlockWrapper(void *s)
 
 /*
  * Spinlock test function
+ * 
+ * Arguments:
+ * numThreads, the number of threads to use for the spinlock test given via input
+ * numMessages, the number of messages to be periodically sent to the shbuf object
  */
 void spinlock_test(int numThreads, int numMessages)
 {
