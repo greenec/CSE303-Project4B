@@ -191,12 +191,16 @@ void cleanExit()
 void * sortWrapper(void * x)
 {
     sortParmType *  S = (sortParmType * )x;
-    if (S->a != 0) 
+    if (S->a != 0) {
         /*
         ** Perform shell or quicksort.
         */
-        if (useQsort) qSortArray (S->a,0,  (S->s)-1, S->tc);
-        else          sSortArray (S->a,S->s        , S->tc);
+        if(useQsort) {
+            qSortArray (S->a,0,  (S->s)-1, S->tc);
+        } else {
+            sSortArray (S->a,S->s        , S->tc);
+        }
+    }
     cleanExit();
     return (void *)0; /* never executes -- eliminates */
                       /* compiler warnings            */
