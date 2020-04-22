@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 
 	if(command->mode == 1)
 	{
-		int ret = threadedMergeSort(argc, argv);
+		int ret = threadedMergeSort(argc, argv, command->messages);
 	}
 	else if (command->mode == 2)
 	{

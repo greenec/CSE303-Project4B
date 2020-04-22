@@ -57,6 +57,8 @@ enum  { DUMPINHIBIT   =              1 };
       int    largeArray1[MAX2ARRAYSIZE];
       int    largeArray2[MAX2ARRAYSIZE];
       int    largeArray3[MAX2ARRAYSIZE];
+      int messageLimit;
+      int messageCounter = 0;
 
       /*
       ** This parameter gets set to 1 if the user 
@@ -83,10 +85,15 @@ int partition(int *  a,  int l,  int r,  char * s)
 
     while(1)
     {
+      (messageCounter)++;
+      if ((messageCounter) > messageLimit)
+      {
+        pthread_exit(NULL); // if we have exceeded
+      }
     	double mS_PER_CLOCK = mS_PER_SEC/CLOCKS_PER_SEC;
-		clock_t   t1 = clock();
-        char message[5000] = "Thread: ";
-        strcat(message, s);
+		  clock_t   t1 = clock();
+      char message[5000] = "Thread: ";
+      strcat(message, s);
 
 
         //strcat(message, total);
@@ -212,17 +219,8 @@ void * sortWrapper(void * x)
 */
  long getArraySize( char *  p)
 {
-          char         line[MAXLINE];
-     //int          j = fputs(p, stdout);
-     //char *  c = fgets(line, MAXLINE, stdin);
-     long         s = MAXARRAYSIZE;
-    if ((s<=0) || (s>MAXARRAYSIZE)) 
-    {
-        if (useQsort) printf("Quicksort Used\n");
-        else          printf("Shellsort Used\n");
-        cleanExit();
-    }
-    return s;
+    
+    return MAXARRAYSIZE;
 }
 
 /*
@@ -402,7 +400,7 @@ void fillArray(int *  a,  int arrSize)
     for (i=0; i<arrSize; ++i) a[i] = rand();
 }
 
-int threadedMergeSort( int argc, char *  argv[])
+int threadedMergeSort( int argc, char *  argv[], int numMessages)
 {
 
     /*
@@ -410,7 +408,7 @@ int threadedMergeSort( int argc, char *  argv[])
     ** is changed.
     */
     char prompt[PROMPTSIZE];
-    
+    messageLimit = numMessages;
 
     /*
     ** ant used in time computation
