@@ -78,6 +78,7 @@ int main(int argc, char** argv)
 	}
 
 	struct Commands* command = (struct Commands*) malloc (sizeof(Commands));
+   command->filename = NULL;
 	determineMode(argc, argv, command);
 	printf(" Mode: %d \n", command->mode  );
 	printf(" Threads: %d \n", command->threads  );

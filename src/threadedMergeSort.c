@@ -213,9 +213,9 @@ void * sortWrapper(void * x)
  long getArraySize( char *  p)
 {
           char         line[MAXLINE];
-     int          j = fputs(p, stdout);
-     char *  c = fgets(line, MAXLINE, stdin);
-     long         s = (long) atof(line);
+     //int          j = fputs(p, stdout);
+     //char *  c = fgets(line, MAXLINE, stdin);
+     long         s = MAXARRAYSIZE;
     if ((s<=0) || (s>MAXARRAYSIZE)) 
     {
         if (useQsort) printf("Quicksort Used\n");
@@ -410,12 +410,7 @@ int threadedMergeSort( int argc, char *  argv[])
     ** is changed.
     */
     char prompt[PROMPTSIZE];
-    sprintf
-        (
-            prompt,
-            "\nEnter array size: 1 -- %d or anything else to quit >> ",
-            MAXARRAYSIZE
-        );
+    
 
     /*
     ** ant used in time computation
@@ -430,6 +425,7 @@ int threadedMergeSort( int argc, char *  argv[])
     while(1)
     {
          int as  = getArraySize(prompt);
+
          int as2 = as*2;
         clock_t   t1,t2;
 
