@@ -84,6 +84,10 @@ int main(int argc, char** argv)
 	printf(" Messages: %d \n", command->messages  );
 	printf(" Filename: %s \n", command->filename  );
 
+   if(command->filename != NULL){
+      //redirect standard out to the new file
+      freopen(command->filename, "a+", stdout); 
+   }
 	int valid = validateArguments(command);
 	if (!valid)
 	{
