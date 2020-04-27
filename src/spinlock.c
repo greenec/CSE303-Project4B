@@ -99,4 +99,5 @@ void spinlock_test(int numThreads, int numMessages)
 			return;
 		}
 	}
+	fprintf(stdout, "While running the spinlock test %d messages were successfully sent to the shbuf object. \n", numMessages);
 }
